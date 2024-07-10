@@ -71,4 +71,5 @@ gem 'devise'
 gem 'activeadmin'
 gem 'pg'
 gem 'faker'
+gem 'kaminari'
 
