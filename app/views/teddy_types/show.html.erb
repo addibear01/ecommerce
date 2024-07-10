@@ -1,0 +1,5 @@
+<h1><%= @teddy_type.teddy_name %></h1>
+<p><%= @teddy_type.description %></p>
+<p>Price: <%= number_to_currency(@teddy_type.price) %></p>
+<p>Stock Quantity: <%= @teddy_type.stock_quantity %></p>
+<p>Category: <%= @teddy_type.category.category_name %></p>

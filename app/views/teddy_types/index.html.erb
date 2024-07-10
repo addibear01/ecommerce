@@ -1,0 +1,8 @@
+<h1>Teddy Types</h1>
+<ul>
+  <% @teddy_types.each do |teddy_type| %>
+    <li>
+      <%= link_to teddy_type.teddy_name, teddy_type_path(teddy_type) %>
+    </li>
+  <% end %>
+</ul>

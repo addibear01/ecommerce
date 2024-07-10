@@ -1,0 +1,2 @@
+module TeddyTypesHelper
+end
