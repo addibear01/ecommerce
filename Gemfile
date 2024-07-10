@@ -72,4 +72,5 @@ gem 'activeadmin'
 gem 'pg'
 gem 'faker'
 gem 'kaminari'
+gem 'sassc-rails'
 

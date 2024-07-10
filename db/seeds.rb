@@ -36,3 +36,4 @@ teddy_types = [
   TeddyType.create!(teddy_name: 'Blue Teddy', description: 'A blue classic teddy Teddy.', price: 29.99, stock_quantity: 35, category: categories[0], created_at: Time.now, updated_at: Time.now),
   TeddyType.create!(teddy_name: 'Purple Teddy', description: 'A sleek, purple modern teddy.', price: 39.99, stock_quantity: 30, category: categories[1], created_at: Time.now, updated_at: Time.now)
 ]
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
