@@ -1,12 +1,15 @@
 Rails.application.routes.draw do
-  get 'teddy_types/index'
-  get 'teddy_types/show'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  get 'categories/index'
+  get 'categories/show'
+  # Health check route
   get "up" => "rails/health#show", as: :rails_health_check
+
+  # Routes for categories and teddy types
+  get 'categories', to: 'categories#index'
+  get 'categories/:id', to: 'categories#show', as: 'category'
+
   resources :teddy_types, only: [:index, :show]
-  # Defines the root path route ("/")
+
+  # Root path
   root 'teddy_types#index'
 end
