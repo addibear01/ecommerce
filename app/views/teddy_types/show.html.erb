@@ -1,5 +1,27 @@
-<h1><%= @teddy_type.teddy_name %></h1>
-<p><%= @teddy_type.description %></p>
-<p>Price: <%= number_to_currency(@teddy_type.price) %></p>
-<p>Stock Quantity: <%= @teddy_type.stock_quantity %></p>
-<p>Category: <%= @teddy_type.category.category_name %></p>
+<div class="teddy-type-details">
+  <h1><%= @teddy_type.teddy_name %></h1>
+  <% if @teddy_type.image.attached? %>
+    <div class="teddy-image-wrapper">
+      <%= image_tag url_for(@teddy_type.image), class: "teddy-image-large" %>
+    </div>
+  <% end %>
+  <p><%= @teddy_type.description %></p>
+  <p><strong>Price:</strong> <%= @teddy_type.price %></p>
+  <p><strong>Stock Quantity:</strong> <%= @teddy_type.stock_quantity %></p>
+  <p><strong>Category:</strong> <%= @teddy_type.category.category_name %></p>
+</div>
+
+<style>
+  .teddy-type-details {
+    text-align: center;
+    margin: 20px auto;
+    max-width: 600px;
+  }
+  .teddy-image-wrapper {
+    margin-bottom: 20px;
+  }
+  .teddy-image-large {
+    max-width: 100%;
+    height: auto;
+  }
+</style>

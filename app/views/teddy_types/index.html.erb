@@ -1,25 +1,54 @@
 <h1>Teddy Types</h1>
 
-<%= form_with url: teddy_types_path, method: :get, local: true do %>
-  <div>
+<%= form_with url: teddy_types_path, method: :get, local: true, class: "search-form" do %>
+  <div class="form-group">
     <%= label_tag :search, "Search by keyword:" %>
-    <%= text_field_tag :search, params[:search] %>
+    <%= text_field_tag :search, params[:search], class: "form-control" %>
   </div>
-  <div>
+  <div class="form-group">
     <%= label_tag :category_id, "Filter by category:" %>
-    <%= select_tag :category_id, options_from_collection_for_select(@categories, :id, :category_name, params[:category_id]), prompt: "Select a category" %>
+    <%= select_tag :category_id, options_from_collection_for_select(@categories, :id, :category_name, params[:category_id]), prompt: "Select a category", class: "form-control" %>
   </div>
-  <div>
-    <%= submit_tag 'Search' %>
+  <div class="form-group">
+    <%= submit_tag 'Search', class: "btn btn-primary" %>
   </div>
 <% end %>
 
-<ul>
+<div class="teddy-types">
   <% @teddy_types.each do |teddy_type| %>
-    <li>
-      <%= link_to teddy_type.teddy_name, teddy_type_path(teddy_type) %>
-    </li>
+    <div class="teddy-type">
+      <h2><%= link_to teddy_type.teddy_name, teddy_type_path(teddy_type) %></h2>
+      <% if teddy_type.image.attached? %>
+        <%= image_tag url_for(teddy_type.image), class: "teddy-image" %>
+      <% end %>
+      <p><%= teddy_type.description %></p>
+    </div>
   <% end %>
-</ul>
+</div>
 
 <%= paginate @teddy_types %>
+
+<style>
+  .search-form {
+    margin-bottom: 20px;
+  }
+  .form-group {
+    margin-bottom: 10px;
+  }
+  .teddy-types {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .teddy-type {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    width: calc(33% - 20px);
+    box-sizing: border-box;
+    text-align: center;
+  }
+  .teddy-image {
+    max-width: 100%;
+    height: auto;
+  }
+</style>

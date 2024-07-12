@@ -2,6 +2,7 @@ class TeddyType < ApplicationRecord
   belongs_to :category
   has_many :order_items
   has_many :cart_items
+  has_one_attached :image
 
   # Validations
   validates :teddy_name, presence: true, length: { maximum: 100 }

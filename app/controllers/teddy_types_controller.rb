@@ -1,4 +1,6 @@
 class TeddyTypesController < ApplicationController
+
+
   def index
     @categories = Category.all
 
@@ -9,9 +11,9 @@ class TeddyTypesController < ApplicationController
       @teddy_types = TeddyType.where("LOWER(teddy_name) LIKE ? OR LOWER(description) LIKE ?", "%#{params[:search].downcase}%", "%#{params[:search].downcase}%").page(params[:page]).per(5)
     elsif params[:category_id].present?
       @category = Category.find(params[:category_id])
-      @teddy_types = @category.teddy_types.page(params[:page]).per(5)
+      @teddy_types = @category.teddy_types.page(params[:page]).per(3)
     else
-      @teddy_types = TeddyType.page(params[:page]).per(5)
+      @teddy_types = TeddyType.page(params[:page]).per(3)
     end
   end
 

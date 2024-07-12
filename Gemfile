@@ -73,4 +73,7 @@ gem 'pg'
 gem 'faker'
 gem 'kaminari'
 gem 'sassc-rails'
+gem 'breadcrumbs_on_rails'
+gem 'gretel'
+gem 'activestorage'
 
