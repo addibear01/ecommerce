@@ -41,7 +41,7 @@ ActiveAdmin.register TeddyType do
     f.actions
   end
 
-  show do |teddy_type|
+  show do
     attributes_table do
       row :teddy_name
       row :description
@@ -53,6 +53,8 @@ ActiveAdmin.register TeddyType do
           image_tag url_for(teddy_type.image), size: "300x300"
         end
       end
+      row :created_at
+      row :updated_at
     end
     active_admin_comments
   end

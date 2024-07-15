@@ -76,4 +76,5 @@ gem 'sassc-rails'
 gem 'breadcrumbs_on_rails'
 gem 'gretel'
 gem 'activestorage'
+gem "tailwindcss-rails"
 

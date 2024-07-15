@@ -8,12 +8,12 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   endrequire 'faker'
 
-# Ensure we start fresh
-require 'faker'
+# Ensure we start freshrequire 'faker'
 
 # Ensure we start fresh by deleting all records in the correct order
 TeddyType.delete_all
 Category.delete_all
+Page.delete_all
 
 # Create 4 Categories
 categories = [
@@ -36,4 +36,23 @@ teddy_types = [
   TeddyType.create!(teddy_name: 'Blue Teddy', description: 'A blue classic teddy Teddy.', price: 29.99, stock_quantity: 35, category: categories[0], created_at: Time.now, updated_at: Time.now),
   TeddyType.create!(teddy_name: 'Purple Teddy', description: 'A sleek, purple modern teddy.', price: 39.99, stock_quantity: 30, category: categories[1], created_at: Time.now, updated_at: Time.now)
 ]
-AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+
+# Debug statement
+puts "Creating About Page"
+Page.find_or_create_by!(slug: "about") do |page|
+  page.title = "About Us"
+  page.content = "<p>This is the about page content.</p>"
+end
+
+# Debug statement
+puts "Creating Contact Page"
+Page.find_or_create_by!(slug: "contact") do |page|
+  page.title = "Contact Us"
+  page.content = "<p>This is the contact page content.</p>"
+end
+
+# Create Admin User if it doesn't already exist
+AdminUser.find_or_create_by!(email: 'admin@example.com') do |admin|
+  admin.password = 'password'
+  admin.password_confirmation = 'password'
+end if Rails.env.development?

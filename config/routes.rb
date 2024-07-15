@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   # Routes for categories and teddy types
   get 'categories', to: 'categories#index'
   get 'categories/:id', to: 'categories#show', as: 'category'
-
+  get 'pages/:id', to: 'pages#show', as: 'page'
+  
   resources :teddy_types, only: [:index, :show]
 
   # Root path
