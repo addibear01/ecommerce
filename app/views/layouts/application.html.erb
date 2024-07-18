@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>EcommerceProject</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -10,10 +10,24 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body class="bg-gray-100 text-gray-900">
     <%= render 'layouts/header' %>
     <%= render 'layouts/navbar' %>
-    <%= render_breadcrumbs %>
-    <%= yield %>
+    
+    <div class="container mx-auto flex mt-4">
+      <aside class="w-1/4 p-4 bg-white rounded shadow">
+        <h2 class="text-xl font-bold mb-4">Categories</h2>
+        <ul class="space-y-2">
+          <% Category.all.each do |category| %>
+            <li><%= link_to category.category_name, category_path(category), class: "text-blue-500 hover:underline" %></li>
+          <% end %>
+        </ul>
+      </aside>
+
+      <main class="w-3/4 ml-4">
+        <%= render_breadcrumbs %>
+        <%= yield %>
+      </main>
+    </div>
   </body>
 </html>

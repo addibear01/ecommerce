@@ -1,6 +1,4 @@
 class TeddyTypesController < ApplicationController
-
-
   def index
     @categories = Category.all
 

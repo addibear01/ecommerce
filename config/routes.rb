@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get 'categories', to: 'categories#index'
   get 'categories/:id', to: 'categories#show', as: 'category'
   get 'pages/:id', to: 'pages#show', as: 'page'
+  resources :categories, only: [:show]
 
   resources :teddy_types, only: [:index, :show]
 

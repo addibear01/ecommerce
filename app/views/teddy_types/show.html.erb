@@ -1,27 +1,12 @@
-<div class="teddy-type-details">
-  <h1><%= @teddy_type.teddy_name %></h1>
+<div class="teddy-type-details text-center max-w-lg mx-auto mt-8 p-4 bg-white rounded shadow">
+  <h1 class="text-2xl font-bold mb-4"><%= @teddy_type.teddy_name %></h1>
   <% if @teddy_type.image.attached? %>
-    <div class="teddy-image-wrapper">
-      <%= image_tag url_for(@teddy_type.image), class: "teddy-image-large" %>
+    <div class="teddy-image-wrapper mb-4">
+      <%= image_tag url_for(@teddy_type.image), class: "teddy-image-large w-full h-auto" %>
     </div>
   <% end %>
-  <p><%= @teddy_type.description %></p>
-  <p><strong>Price:</strong> <%= @teddy_type.price %></p>
-  <p><strong>Stock Quantity:</strong> <%= @teddy_type.stock_quantity %></p>
-  <p><strong>Category:</strong> <%= @teddy_type.category.category_name %></p>
+  <p class="text-gray-700 mb-4"><%= @teddy_type.description %></p>
+  <p class="font-bold">Price: <%= number_to_currency(@teddy_type.price) %></p>
+  <p class="font-bold">Stock Quantity: <%= @teddy_type.stock_quantity %></p>
+  <p class="font-bold">Category: <%= @teddy_type.category.category_name %></p>
 </div>
-
-<style>
-  .teddy-type-details {
-    text-align: center;
-    margin: 20px auto;
-    max-width: 600px;
-  }
-  .teddy-image-wrapper {
-    margin-bottom: 20px;
-  }
-  .teddy-image-large {
-    max-width: 100%;
-    height: auto;
-  }
-</style>

@@ -77,4 +77,4 @@ gem 'breadcrumbs_on_rails'
 gem 'gretel'
 gem 'activestorage'
 gem "tailwindcss-rails"
-
+gem 'image_processing', '~> 1.2'

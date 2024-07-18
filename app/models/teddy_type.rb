@@ -17,4 +17,11 @@ class TeddyType < ApplicationRecord
   def self.ransackable_associations(auth_object = nil)
     ["category", "order_items", "cart_items"]
   end
+
+  def thumbnail
+    image.variant(resize: "100x100").processed
+  end
+  def display_image
+    image.variant(resize: "300x300").processed
+  end
 end

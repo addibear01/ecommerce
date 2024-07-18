@@ -13,7 +13,7 @@ ActiveAdmin.register TeddyType do
     end
     column "Image" do |teddy_type|
       if teddy_type.image.attached?
-        image_tag url_for(teddy_type.image), size: "100x100"
+        image_tag teddy_type.image.variant(resize_to_fill: [100, 100]).processed
       end
     end
     column :created_at
@@ -50,7 +50,7 @@ ActiveAdmin.register TeddyType do
       row :category
       row "Image" do
         if teddy_type.image.attached?
-          image_tag url_for(teddy_type.image), size: "300x300"
+          image_tag teddy_type.image.variant(resize_to_fill: [300, 300]).processed
         end
       end
       row :created_at
