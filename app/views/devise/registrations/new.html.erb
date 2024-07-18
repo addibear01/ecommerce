@@ -1,7 +1,5 @@
-<h2>Sign up</h2>
-
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :post }) do |f| %>
+  <%= devise_error_messages! %>
 
   <div class="field">
     <%= f.label :email %><br />
@@ -11,7 +9,7 @@
   <div class="field">
     <%= f.label :password %>
     <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
+      <em>(<%= @minimum_password_length %> characters minimum)</em>
     <% end %><br />
     <%= f.password_field :password, autocomplete: "new-password" %>
   </div>
@@ -27,8 +25,8 @@
   </div>
 
   <div class="field">
-    <%= f.label :province %><br />
-    <%= f.collection_select :province_id, Province.all, :id, :name %>
+    <%= f.label :province_id, "Province" %><br />
+    <%= f.collection_select :province_id, Province.all, :id, :name, prompt: "Select a Province" %>
   </div>
 
   <div class="actions">

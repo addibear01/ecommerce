@@ -13,6 +13,16 @@ categories = [
   Category.create!(category_name: 'Seasonal Teddies', created_at: Time.now, updated_at: Time.now)
 ]
 
+# Create Provinces
+provinces = [
+  Province.create!(name: 'Manitoba'),
+  Province.create!(name: 'Alberta'),
+  Province.create!(name: 'Ontario'),
+  Province.create!(name: 'Nova Scotia'),
+  Province.create!(name: 'Quebec'),
+  Province.create!(name: 'New Brunswick')
+]
+
 # Create 10 Teddy Types (Products)
 teddy_types = [
   TeddyType.create!(teddy_name: 'Black Teddy', description: 'A timeless black Teddy with luscious fur.', price: 29.99, stock_quantity: 50, category: categories[0], created_at: Time.now, updated_at: Time.now),
