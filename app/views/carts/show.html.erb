@@ -11,3 +11,9 @@
     </li>
   <% end %>
 </ul>
+
+<% if @cart.cart_items.any? %>
+  <%= link_to 'Proceed to Checkout', new_order_path, class: "bg-green-500 text-white px-4 py-2 rounded" %>
+<% else %>
+  <p>Your cart is empty.</p>
+<% end %>

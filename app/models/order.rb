@@ -1,5 +1,5 @@
 class Order < ApplicationRecord
-  belongs_to :customer
+  belongs_to :user  # Update this association to refer to User
   has_many :order_items
   has_many :order_taxes
 
