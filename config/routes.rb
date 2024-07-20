@@ -3,20 +3,17 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
-  get 'categories/index'
-  get 'categories/show'
-
-  # Health check route
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Routes for categories and teddy types
-  get 'categories', to: 'categories#index'
-  get 'categories/:id', to: 'categories#show', as: 'category'
-  get 'pages/:id', to: 'pages#show', as: 'page'
-  resources :categories, only: [:show]
-
+  resources :categories, only: [:index, :show]
   resources :teddy_types, only: [:index, :show]
+  resources :pages, only: [:show]
 
-  # Root path
+  resources :carts, only: [:show] do
+    post 'add_item/:teddy_type_id', to: 'carts#add_item', as: 'add_item'
+    delete 'remove_item/:teddy_type_id', to: 'carts#remove_item', as: 'remove_item'
+    patch 'update_item/:cart_item_id', to: 'carts#update_item', as: 'update_item'
+  end
+
   root 'teddy_types#index'
 end

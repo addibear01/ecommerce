@@ -1,0 +1,13 @@
+<h1>Your Cart</h1>
+<ul>
+  <% @cart.cart_items.each do |item| %>
+    <li>
+      <%= item.product.teddy_name %> - 
+      <%= form_with url: cart_update_item_path(@cart, item), method: :patch, local: true do |f| %>
+        <%= f.number_field :quantity, value: item.quantity, min: 1, class: "quantity-input" %>
+        <%= f.submit "Update", class: "bg-blue-500 text-white px-2 py-1 rounded" %>
+      <% end %>
+      <%= link_to 'Remove', cart_remove_item_path(@cart, item.teddy_type_id), method: :delete, class: "bg-red-500 text-white px-2 py-1 rounded" %>
+    </li>
+  <% end %>
+</ul>
