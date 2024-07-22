@@ -1,4 +1,15 @@
 class OrdersController < ApplicationController
+  before_action :authenticate_user!
+
+  def index
+    @orders = current_user.orders
+  end
+
+  def show
+    @order = current_user.orders.find(params[:id])
+    @taxes = @order.calculate_taxes
+  end
+
   def new
     @order = Order.new
     @user = current_user
@@ -24,11 +35,6 @@ class OrdersController < ApplicationController
       Rails.logger.debug "Order save failed: #{@order.errors.full_messages.join(", ")}"
       render :new, status: :unprocessable_entity
     end
-  end
-
-  def show
-    @order = Order.find(params[:id])
-    @taxes = @order.calculate_taxes
   end
 
   private
