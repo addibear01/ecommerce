@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :categories, only: [:index, :show]
   resources :teddy_types, only: [:index, :show]
   resources :pages, only: [:show]
+  resources :orders, only: [:index, :show, :new, :create]
 
   resources :carts, only: [:show] do
     post 'add_item/:teddy_type_id', to: 'carts#add_item', as: 'add_item'

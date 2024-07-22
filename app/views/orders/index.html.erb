@@ -1,0 +1,9 @@
+<h1>My Orders</h1>
+
+<% @orders.each do |order| %>
+  <div>
+    <h2>Order <%= link_to "##{order.id}", order_path(order) %> - Placed on <%= order.created_at.strftime("%B %d, %Y") %></h2>
+    <p>Grand Total: <%= number_to_currency(order.total_amount) %></p>
+    <hr>
+  </div>
+<% end %>
