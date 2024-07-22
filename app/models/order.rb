@@ -32,7 +32,7 @@ class Order < ApplicationRecord
     when 'Ontario'
       { hst: subtotal * 0.13 }
     when 'Quebec'
-      { gst: subtotal * 0.05, pst: subtotal * 0.09975 }
+      { gst: subtotal * 0.05, qst: subtotal * 0.09975 }
     when 'Saskatchewan'
       { gst: subtotal * 0.05, pst: subtotal * 0.06 }
     else
