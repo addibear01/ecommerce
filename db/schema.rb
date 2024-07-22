@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_22_155639) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_22_184555) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -103,10 +103,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_22_155639) do
     t.integer "order_id"
     t.integer "teddy_type_id"
     t.integer "quantity"
-    t.decimal "item_price"
+    t.decimal "price", precision: 10, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "price"
     t.index ["order_id"], name: "index_order_items_on_order_id"
     t.index ["teddy_type_id"], name: "index_order_items_on_teddy_type_id"
   end
@@ -131,7 +130,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_22_155639) do
     t.string "city"
     t.string "province"
     t.string "postal_code"
-    t.integer "user_id", null: false
+    t.integer "user_id"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
@@ -148,15 +147,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_22_155639) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_provinces_on_name", unique: true
   end
 
   create_table "tax_rates", force: :cascade do |t|
-    t.string "province"
-    t.decimal "gst"
-    t.decimal "pst"
-    t.decimal "hst"
+    t.integer "province_id", null: false
+    t.decimal "gst", precision: 5, scale: 2
+    t.decimal "pst", precision: 5, scale: 2
+    t.decimal "hst", precision: 5, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["province_id"], name: "index_tax_rates_on_province_id"
   end
 
   create_table "taxes", force: :cascade do |t|
@@ -212,6 +213,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_22_155639) do
   add_foreign_key "order_taxes", "taxes"
   add_foreign_key "orders", "customers"
   add_foreign_key "orders", "users"
+  add_foreign_key "tax_rates", "provinces"
   add_foreign_key "teddy_types", "categories"
   add_foreign_key "users", "provinces"
 end

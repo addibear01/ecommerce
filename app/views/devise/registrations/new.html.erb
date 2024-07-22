@@ -39,9 +39,9 @@
   </div>
 
   <div class="field">
-    <%= f.label :province_id %><br />
-    <%= f.collection_select :province_id, Province.all, :id, :name, prompt: "Select a Province" %>
-  </div>
+  <%= f.label :province_id %><br />
+  <%= f.collection_select :province_id, Province.all, :id, :name, prompt: "Select a Province" %>
+</div>
 
   <div class="actions">
     <%= f.submit "Sign up" %>

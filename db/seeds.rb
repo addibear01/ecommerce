@@ -4,6 +4,7 @@ require 'faker'
 TeddyType.delete_all
 Category.delete_all
 Page.delete_all
+Province.delete_all
 
 # Create 4 Categories
 categories = [
@@ -15,12 +16,12 @@ categories = [
 
 # Create Provinces
 provinces = [
-  Province.create!(name: 'Manitoba'),
-  Province.create!(name: 'Alberta'),
-  Province.create!(name: 'Ontario'),
-  Province.create!(name: 'Nova Scotia'),
-  Province.create!(name: 'Quebec'),
-  Province.create!(name: 'New Brunswick')
+  Province.create!(id: 1, name: 'Manitoba'),
+  Province.create!(id: 2, name: 'Alberta'),
+  Province.create!(id: 3, name: 'Ontario'),
+  Province.create!(id: 4, name: 'Nova Scotia'),
+  Province.create!(id: 5, name: 'Quebec'),
+  Province.create!(id: 6, name: 'New Brunswick')
 ]
 
 # Create 10 Teddy Types (Products)
