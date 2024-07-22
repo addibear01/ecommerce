@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_18_021605) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_22_123739) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -66,9 +66,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_18_021605) do
   end
 
   create_table "cart_items", force: :cascade do |t|
-    t.integer "cart_id"
-    t.integer "teddy_type_id"
-    t.integer "quantity"
+    t.integer "cart_id", null: false
+    t.integer "teddy_type_id", null: false
+    t.integer "quantity", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cart_id"], name: "index_cart_items_on_cart_id"
@@ -83,7 +83,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_18_021605) do
   end
 
   create_table "categories", force: :cascade do |t|
-    t.string "category_name"
+    t.string "category_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -106,6 +106,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_18_021605) do
     t.decimal "item_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "price"
     t.index ["order_id"], name: "index_order_items_on_order_id"
     t.index ["teddy_type_id"], name: "index_order_items_on_teddy_type_id"
   end
@@ -126,7 +127,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_18_021605) do
     t.decimal "total_amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "street"
+    t.string "city"
+    t.string "province"
+    t.string "postal_code"
+    t.integer "user_id", null: false
     t.index ["customer_id"], name: "index_orders_on_customer_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "pages", force: :cascade do |t|
@@ -152,11 +159,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_18_021605) do
   end
 
   create_table "teddy_types", force: :cascade do |t|
-    t.string "teddy_name"
-    t.text "description"
-    t.decimal "price"
-    t.integer "stock_quantity"
-    t.integer "category_id"
+    t.string "teddy_name", null: false
+    t.text "description", null: false
+    t.decimal "price", precision: 8, scale: 2, null: false
+    t.integer "stock_quantity", null: false
+    t.integer "category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_teddy_types_on_category_id"
@@ -166,19 +173,22 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_18_021605) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
+    t.string "address"
+    t.integer "province_id", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "address"
-    t.string "province"
-    t.integer "province_id"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "phone_number"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["province_id"], name: "index_users_on_province_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -186,11 +196,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_18_021605) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "teddy_types"
-  add_foreign_key "carts", "customers"
+  add_foreign_key "carts", "users", column: "customer_id"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "teddy_types"
   add_foreign_key "order_taxes", "orders"
   add_foreign_key "order_taxes", "taxes"
   add_foreign_key "orders", "customers"
+  add_foreign_key "orders", "users"
   add_foreign_key "teddy_types", "categories"
+  add_foreign_key "users", "provinces"
 end

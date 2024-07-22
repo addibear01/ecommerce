@@ -1,0 +1,16 @@
+<%= form_with(model: @order, local: true) do |form| %>
+  <h2>Shipping Address</h2>
+  <%= form.label :street %>
+  <%= form.text_field :street %>
+  
+  <%= form.label :city %>
+  <%= form.text_field :city %>
+  
+  <%= form.label :province %>
+  <%= form.text_field :province %>
+  
+  <%= form.label :postal_code %>
+  <%= form.text_field :postal_code %>
+  
+  <%= form.submit 'Complete Order' %>
+<% end %>

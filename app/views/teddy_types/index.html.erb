@@ -22,6 +22,11 @@
         <%= image_tag url_for(teddy_type.image), class: "mt-2 w-full h-auto" %>
       <% end %>
       <p class="mt-2 text-gray-700"><%= teddy_type.description %></p>
+      <% if user_signed_in? %>
+        <%= link_to 'Add to Cart', cart_add_item_path(current_cart.id, teddy_type.id), method: :post, class: "bg-blue-500 text-white px-4 py-2 rounded mt-2" %>
+      <% else %>
+        <%= link_to 'Sign In to Add to Cart', new_user_session_path, class: "bg-blue-500 text-white px-4 py-2 rounded mt-2" %>
+      <% end %>
     </div>
   <% end %>
 </div>
