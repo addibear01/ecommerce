@@ -18,7 +18,6 @@ class Order < ApplicationRecord
     taxes.values.sum
   end
 
-  # Make this method public
   def calculate_taxes
     case province
     when 'Alberta', 'Northwest Territories', 'Nunavut', 'Yukon'
@@ -39,4 +38,14 @@ class Order < ApplicationRecord
       { gst: subtotal * 0.05 }
     end
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["id", "user_id", "created_at", "updated_at", "total_amount", "street", "city", "province", "postal_code"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["order_items", "user"]
+  end
+
+  scope :recent, ->(limit) { order(created_at: :desc).limit(limit) }
 end

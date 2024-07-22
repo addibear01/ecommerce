@@ -1,0 +1,9 @@
+<%= active_admin_filters_form_for Order.ransack(params[:q]), as: :q do |f| %>
+  <%= f.label :user_email_cont, "Customer Email" %>
+  <%= f.text_field :user_email_cont %>
+  <%= f.label :created_at_gteq, "Order Date After" %>
+  <%= f.date_select :created_at_gteq %>
+  <%= f.label :created_at_lteq, "Order Date Before" %>
+  <%= f.date_select :created_at_lteq %>
+  <%= f.submit "Filter", class: "button" %>
+<% end %>

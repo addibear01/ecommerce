@@ -15,6 +15,10 @@ Rails.application.routes.draw do
     patch 'update_item/:cart_item_id', to: 'carts#update_item', as: 'update_item'
   end
 
+  namespace :admin do
+    get 'orders_report', to: 'orders_report#index', as: 'orders_report'
+  end
+
   resources :orders, only: [:new, :create, :show]
 
   root 'teddy_types#index'

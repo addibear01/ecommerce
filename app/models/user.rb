@@ -14,4 +14,12 @@ class User < ApplicationRecord
   validates :address, presence: true, length: { maximum: 255 }
   validates :phone_number, presence: true, length: { maximum: 15 }
   validates :province_id, presence: true
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["address", "created_at", "current_sign_in_at", "current_sign_in_ip", "email", "first_name", "id", "last_name", "phone_number", "province_id", "sign_in_count", "updated_at"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["orders"]
+  end
 end
