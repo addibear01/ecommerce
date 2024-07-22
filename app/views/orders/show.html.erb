@@ -22,8 +22,8 @@
   </tbody>
 </table>
 
-<p>Subtotal: <%= number_to_currency(@order.order_items.sum { |item| item.price * item.quantity }) %></p>
-<% @taxes.each do |tax_name, tax_rate| %>
-  <p><%= tax_name.upcase %>: <%= number_to_currency(@order.order_items.sum { |item| item.price * item.quantity } * tax_rate) %></p>
+<p>Subtotal: <%= number_to_currency(@order.subtotal) %></p>
+<% @taxes.each do |tax_name, tax_amount| %>
+  <p><%= tax_name.upcase %>: <%= number_to_currency(tax_amount) %></p>
 <% end %>
 <p>Total: <%= number_to_currency(@order.total_amount) %></p>

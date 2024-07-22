@@ -21,4 +21,8 @@ class Cart < ApplicationRecord
       current_item.destroy if current_item.quantity <= 0
     end
   end
+
+  def clear
+    cart_items.destroy_all
+  end
 end
