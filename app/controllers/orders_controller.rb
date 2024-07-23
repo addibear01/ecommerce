@@ -8,6 +8,7 @@ class OrdersController < ApplicationController
   def show
     @order = current_user.orders.find(params[:id])
     @taxes = @order.calculate_taxes
+    logger.debug "Order taxes: #{@taxes}"
   end
 
   def new
@@ -31,7 +32,7 @@ class OrdersController < ApplicationController
 
         begin
           Stripe.api_key = Rails.application.credentials.dig(:stripe, :secret_key)
-          amount = (total_amount * 100).to_i
+          amount = (@order.total_amount * 100).to_i
 
           customer = Stripe::Customer.create(
             email: current_user.email,
