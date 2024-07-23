@@ -21,12 +21,38 @@ class OrdersController < ApplicationController
 
     if @order.save
       if current_cart.cart_items.present?
+        total_amount = current_cart.cart_items.sum { |cart_item| cart_item.quantity * cart_item.teddy_type.price }
+        @order.update(total_amount: total_amount)
+
         current_cart.cart_items.each do |cart_item|
           teddy_type = cart_item.teddy_type
           @order.order_items.create(teddy_type: teddy_type, quantity: cart_item.quantity, price: teddy_type.price)
         end
-        current_cart.clear
-        redirect_to @order, notice: 'Order was successfully created.'
+
+        begin
+          Stripe.api_key = Rails.application.credentials.dig(:stripe, :secret_key)
+          amount = (total_amount * 100).to_i
+
+          customer = Stripe::Customer.create(
+            email: current_user.email,
+            source: params[:stripeToken]
+          )
+
+          charge = Stripe::Charge.create(
+            customer: customer.id,
+            amount: amount,
+            description: 'Rails Stripe customer',
+            currency: 'usd'
+          )
+
+          @order.update(payment_status: 'paid', payment_id: charge.id, status: 'completed')
+          current_cart.clear
+          redirect_to @order, notice: 'Order was successfully created and paid.'
+        rescue Stripe::CardError => e
+          @order.destroy
+          flash[:error] = e.message
+          render :new, status: :unprocessable_entity
+        end
       else
         @order.destroy
         redirect_to new_order_path, alert: 'Your cart is empty. Please add items to the cart before completing the order.'
