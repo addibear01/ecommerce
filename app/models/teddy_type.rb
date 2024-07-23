@@ -11,9 +11,14 @@ class TeddyType < ApplicationRecord
   validates :stock_quantity, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :category_id, presence: true
 
+  scope :on_sale, -> { where(on_sale: true) }
+  scope :new_products, -> { where('created_at >= ?', 3.days.ago) }
+  scope :recently_updated, -> { where('updated_at >= ? AND created_at < ?', 3.days.ago, 3.days.ago) }
+
   def self.ransackable_attributes(auth_object = nil)
     ["category_id", "created_at", "description", "id", "price", "stock_quantity", "teddy_name", "updated_at"]
   end
+
   def self.ransackable_associations(auth_object = nil)
     ["category", "order_items", "cart_items"]
   end
@@ -21,6 +26,7 @@ class TeddyType < ApplicationRecord
   def thumbnail
     image.variant(resize: "100x100").processed
   end
+
   def display_image
     image.variant(resize: "300x300").processed
   end

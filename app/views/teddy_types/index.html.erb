@@ -1,3 +1,4 @@
+<!-- app/views/teddy_types/index.html.erb -->
 <h1 class="text-2xl font-bold mb-4">Teddy Types</h1>
 
 <%= form_with url: teddy_types_path, method: :get, local: true, class: "mb-4" do %>
@@ -9,6 +10,10 @@
     <%= label_tag :category_id, "Filter by category:", class: "block text-gray-700" %>
     <%= select_tag :category_id, options_from_collection_for_select(@categories, :id, :category_name, params[:category_id]), prompt: "Select a category", class: "form-select mt-1 block w-full" %>
   </div>
+  <div class="mb-4">
+    <%= label_tag :filter, "Filter by:", class: "block text-gray-700" %>
+    <%= select_tag :filter, options_for_select([['On Sale', 'on_sale'], ['New', 'new'], ['Recently Updated', 'recently_updated']], params[:filter]), prompt: "Select a filter", class: "form-select mt-1 block w-full" %>
+  </div>
   <div>
     <%= submit_tag 'Search', class: "bg-blue-500 text-white px-4 py-2 rounded" %>
   </div>
@@ -19,7 +24,7 @@
     <div class="bg-white p-4 rounded shadow">
       <h2 class="text-xl font-bold"><%= link_to teddy_type.teddy_name, teddy_type_path(teddy_type) %></h2>
       <% if teddy_type.image.attached? %>
-        <%= image_tag url_for(teddy_type.image), class: "mt-2 w-full h-auto" %>
+        <%= image_tag teddy_type.thumbnail, class: "mt-2 w-full h-auto" %>
       <% end %>
       <p class="mt-2 text-gray-700"><%= teddy_type.description %></p>
       <% if user_signed_in? %>
