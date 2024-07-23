@@ -5,6 +5,8 @@ class Order < ApplicationRecord
 
   validates :street, :city, :province, :postal_code, presence: true
 
+  enum order_status: { pending: 0, paid: 1, shipped: 2 }
+
   def total_amount
     subtotal + total_taxes
   end
@@ -18,8 +20,6 @@ class Order < ApplicationRecord
   end
 
   def calculate_taxes
-    logger.debug "Calculating taxes for order #{id} in province #{province} with subtotal #{subtotal}"
-
     case province
     when 'Alberta', 'Northwest Territories', 'Nunavut', 'Yukon'
       { gst: subtotal * 0.05 }

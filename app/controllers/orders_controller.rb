@@ -19,6 +19,7 @@ class OrdersController < ApplicationController
   def create
     @order = Order.new(order_params)
     @order.user = current_user
+    @order.order_status = :pending
 
     if @order.save
       if current_cart.cart_items.present?
@@ -46,7 +47,7 @@ class OrdersController < ApplicationController
             currency: 'usd'
           )
 
-          @order.update(payment_status: 'paid', payment_id: charge.id, status: 'completed')
+          @order.update(payment_status: 'paid', payment_id: charge.id, order_status: :paid)
           current_cart.clear
           redirect_to @order, notice: 'Order was successfully created and paid.'
         rescue Stripe::CardError => e

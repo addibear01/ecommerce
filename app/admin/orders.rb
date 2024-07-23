@@ -1,10 +1,12 @@
 ActiveAdmin.register Order do
+  permit_params :user_id, :street, :city, :province, :postal_code, :total_amount, :payment_status, :order_status, :payment_id
+
   controller do
     def find_resource
       Order.includes(:order_items, :order_taxes).find(params[:id])
     end
   end
-  # Filter settings for Ransack
+
   filter :user
   filter :created_at
   filter :updated_at
@@ -15,6 +17,7 @@ ActiveAdmin.register Order do
   filter :postal_code
   filter :payment_status
   filter :payment_id
+  filter :order_status
 
   index do
     selectable_column
@@ -25,6 +28,7 @@ ActiveAdmin.register Order do
       number_to_currency(order.total_amount)
     end
     column :payment_status
+    column :order_status
     column :payment_id
     actions
   end
@@ -39,6 +43,7 @@ ActiveAdmin.register Order do
         number_to_currency(order.total_amount)
       end
       row :payment_status
+      row :order_status
       row :payment_id
     end
 
@@ -64,9 +69,27 @@ ActiveAdmin.register Order do
     active_admin_comments
   end
 
-  sidebar :help do
-    ul do
-      li link_to "Orders Report", admin_orders_report_path
+  form do |f|
+    f.inputs do
+      f.input :user
+      f.input :street
+      f.input :city
+      f.input :province
+      f.input :postal_code
+      f.input :total_amount
+      f.input :payment_status
+      f.input :order_status, as: :select, collection: Order.order_statuses.keys
+      f.input :payment_id
     end
+    f.actions
+  end
+
+  action_item :ship_order, only: :show do
+    link_to 'Mark as Shipped', mark_as_shipped_admin_order_path(order), method: :put if order.paid?
+  end
+
+  member_action :mark_as_shipped, method: :put do
+    resource.update(order_status: :shipped)
+    redirect_to resource_path, notice: "Order marked as shipped."
   end
 end
