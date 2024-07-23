@@ -1,5 +1,5 @@
 class Category < ApplicationRecord
-  has_many :teddy_types
+  has_many :teddy_types, dependent: :destroy
 
   # Validations
   validates :category_name, presence: true, uniqueness: true, length: { maximum: 50 }

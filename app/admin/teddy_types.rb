@@ -1,5 +1,16 @@
 ActiveAdmin.register TeddyType do
-  permit_params :teddy_name, :description, :price, :stock_quantity, :category_id, :image
+  permit_params :teddy_name, :description, :price, :stock_quantity, :category_id, :image, :on_sale
+
+  scope :all, default: true
+  scope :on_sale do |teddy_types|
+    teddy_types.on_sale
+  end
+  scope :new_products do |teddy_types|
+    teddy_types.new_products
+  end
+  scope :recently_updated do |teddy_types|
+    teddy_types.recently_updated
+  end
 
   index do
     selectable_column
@@ -8,6 +19,7 @@ ActiveAdmin.register TeddyType do
     column :description
     column :price
     column :stock_quantity
+    column :on_sale
     column "Category", sortable: :category_id do |teddy_type|
       teddy_type.category.category_name
     end
@@ -26,6 +38,7 @@ ActiveAdmin.register TeddyType do
   filter :price
   filter :stock_quantity
   filter :category
+  filter :on_sale
   filter :created_at
   filter :updated_at
 
@@ -36,6 +49,7 @@ ActiveAdmin.register TeddyType do
       f.input :price
       f.input :stock_quantity
       f.input :category, as: :select, collection: Category.all.collect { |category| [category.category_name, category.id] }
+      f.input :on_sale
       f.input :image, as: :file
     end
     f.actions
@@ -47,6 +61,7 @@ ActiveAdmin.register TeddyType do
       row :description
       row :price
       row :stock_quantity
+      row :on_sale
       row :category
       row "Image" do
         if teddy_type.image.attached?

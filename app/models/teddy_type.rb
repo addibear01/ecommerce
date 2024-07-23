@@ -16,7 +16,7 @@ class TeddyType < ApplicationRecord
   scope :recently_updated, -> { where('updated_at >= ? AND created_at < ?', 3.days.ago, 3.days.ago) }
 
   def self.ransackable_attributes(auth_object = nil)
-    ["category_id", "created_at", "description", "id", "price", "stock_quantity", "teddy_name", "updated_at"]
+    ["category_id", "created_at", "description", "id", "price", "stock_quantity", "teddy_name", "updated_at", "on_sale"]
   end
 
   def self.ransackable_associations(auth_object = nil)
