@@ -1,18 +1,6 @@
-<h2>Shipping Address</h2>
-<%= form_with(model: @order, url: orders_path, local: true, id: 'payment-form') do |form| %>
-  <%= form.label :street %>
-  <%= form.text_field :street %>
-  
-  <%= form.label :city %>
-  <%= form.text_field :city %>
-  
-  <%= form.label :province %>
-  <%= form.text_field :province %>
-  
-  <%= form.label :postal_code %>
-  <%= form.text_field :postal_code, id: 'postal-code' %>
-  
-  <h2>Payment Information</h2>
+<h1>Make a Payment</h1>
+
+<%= form_tag payments_path, id: 'payment-form' do %>
   <article>
     <label for="card-element">
       Credit or debit card
@@ -25,20 +13,19 @@
     <div id="card-errors" role="alert"></div>
   </article>
 
-  <%= form.submit 'Complete Order' %>
+  <button type="submit">Submit Payment</button>
 <% end %>
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    console.log("DOM fully loaded and parsed");
-
+    // Create a Stripe client using the publishable key from credentials
     var stripe = Stripe('<%= Rails.application.credentials.dig(:stripe, :publishable_key) %>');
-    console.log("Stripe initialized with publishable key:", '<%= Rails.application.credentials.dig(:stripe, :publishable_key) %>');
 
+    // Create an instance of Elements
     var elements = stripe.elements();
-    console.log("Elements created");
 
+    // Custom styling can be passed to options when creating an Element.
     var style = {
       base: {
         color: '#32325d',
@@ -55,40 +42,40 @@
       }
     };
 
-    var card = elements.create('card', { style: style, hidePostalCode: true });
-    console.log("Card element created");
+    // Create an instance of the card Element.
+    var card = elements.create('card', {style: style});
 
+    // Add an instance of the card Element into the `card-element` <div>.
     card.mount('#card-element');
-    console.log("Card element mounted");
 
+    // Handle real-time validation errors from the card Element.
     card.on('change', function(event) {
       var displayError = document.getElementById('card-errors');
       if (event.error) {
         displayError.textContent = event.error.message;
-        console.log("Card error:", event.error.message);
       } else {
         displayError.textContent = '';
-        console.log("Card input is valid");
       }
     });
 
+    // Handle form submission.
     var form = document.getElementById('payment-form');
     form.addEventListener('submit', function(event) {
       event.preventDefault();
-      console.log("Form submission prevented, creating token...");
 
-      stripe.createToken(card, { address_zip: document.getElementById('postal-code').value }).then(function(result) {
+      stripe.createToken(card).then(function(result) {
         if (result.error) {
+          // Inform the user if there was an error.
           var errorElement = document.getElementById('card-errors');
           errorElement.textContent = result.error.message;
-          console.log("Token creation error:", result.error.message);
         } else {
-          console.log("Token created:", result.token.id);
+          // Send the token to your server.
           stripeTokenHandler(result.token);
         }
       });
     });
 
+    // Submit the form with the token ID.
     function stripeTokenHandler(token) {
       var form = document.getElementById('payment-form');
       var hiddenInput = document.createElement('input');
@@ -97,7 +84,7 @@
       hiddenInput.setAttribute('value', token.id);
       form.appendChild(hiddenInput);
 
-      console.log("Submitting form with token...");
+      // Submit the form.
       form.submit();
     }
   });

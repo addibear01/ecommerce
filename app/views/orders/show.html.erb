@@ -1,14 +1,19 @@
 <h2>Invoice</h2>
-<p>Order ID: <%= @order.id %></p>
+<h1>Order <%= @order.id %></h1>
+<p>Placed on <%= @order.created_at.strftime("%B %d, %Y") %></p>
+
+<h2>Customer Details</h2>
 <p>Customer: <%= @order.user.first_name %> <%= @order.user.last_name %></p>
 <p>Address: <%= @order.street %>, <%= @order.city %>, <%= @order.province %>, <%= @order.postal_code %></p>
 
+<h2>Products</h2>
 <table>
   <thead>
     <tr>
-      <th>Teddy Name</th>
+      <th>Name</th>
       <th>Quantity</th>
       <th>Price</th>
+      <th>Subtotal</th>
     </tr>
   </thead>
   <tbody>
@@ -16,14 +21,29 @@
       <tr>
         <td><%= item.teddy_type.teddy_name %></td>
         <td><%= item.quantity %></td>
+        <td><%= number_to_currency(item.price) %></td>
         <td><%= number_to_currency(item.price * item.quantity) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<p>Subtotal: <%= number_to_currency(@order.subtotal) %></p>
-<% @taxes.each do |tax_name, tax_amount| %>
-  <p><%= tax_name.upcase %>: <%= number_to_currency(tax_amount) %></p>
-<% end %>
-<p>Total: <%= number_to_currency(@order.total_amount) %></p>
+<h2>Taxes</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Tax Type</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @taxes.each do |tax_name, tax_amount| %>
+      <tr>
+        <td><%= tax_name.to_s.humanize %></td>
+        <td><%= number_to_currency(tax_amount) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>Grand Total: <%= number_to_currency(@order.total_amount) %></h2>

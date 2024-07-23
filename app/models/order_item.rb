@@ -2,7 +2,6 @@ class OrderItem < ApplicationRecord
   belongs_to :order
   belongs_to :teddy_type
 
-  # Validations
   validates :order_id, presence: true
   validates :teddy_type_id, presence: true
   validates :quantity, presence: true, numericality: { only_integer: true, greater_than: 0 }
@@ -10,5 +9,9 @@ class OrderItem < ApplicationRecord
 
   def subtotal
     quantity * price
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["created_at", "id", "order_id", "price", "quantity", "teddy_type_id", "updated_at"]
   end
 end

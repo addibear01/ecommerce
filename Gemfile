@@ -79,4 +79,5 @@ gem 'activestorage'
 gem "tailwindcss-rails"
 gem 'image_processing', '~> 1.2'
 gem 'webpacker'
+gem 'stripe'
 

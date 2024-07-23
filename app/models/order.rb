@@ -5,6 +5,8 @@ class Order < ApplicationRecord
 
   validates :street, :city, :province, :postal_code, presence: true
 
+  enum order_status: { pending: 0, paid: 1, shipped: 2 }
+
   def total_amount
     subtotal + total_taxes
   end
@@ -14,11 +16,9 @@ class Order < ApplicationRecord
   end
 
   def total_taxes
-    taxes = calculate_taxes
-    taxes.values.sum
+    calculate_taxes.values.sum
   end
 
-  # Make this method public
   def calculate_taxes
     case province
     when 'Alberta', 'Northwest Territories', 'Nunavut', 'Yukon'
@@ -39,4 +39,14 @@ class Order < ApplicationRecord
       { gst: subtotal * 0.05 }
     end
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["id", "user_id", "created_at", "updated_at", "total_amount", "street", "city", "province", "postal_code", "payment_status", "payment_id"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["user", "order_items", "order_taxes"]
+  end
+
+  scope :recent, ->(limit) { order(created_at: :desc).limit(limit) }
 end
