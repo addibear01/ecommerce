@@ -1,4 +1,8 @@
 class TeddyTypesController < ApplicationController
+  before_action :set_teddy_type, only: [:show]
+
+  add_breadcrumb "Teddy Types", :teddy_types_path, only: [:index]
+
   def index
     @categories = Category.all
     @teddy_types = TeddyType.all
@@ -26,6 +30,13 @@ class TeddyTypesController < ApplicationController
   end
 
   def show
+    add_breadcrumb @teddy_type.category.category_name, category_path(@teddy_type.category)
+    add_breadcrumb @teddy_type.teddy_name, teddy_type_path(@teddy_type)
+  end
+
+  private
+
+  def set_teddy_type
     @teddy_type = TeddyType.find(params[:id])
   end
 end
