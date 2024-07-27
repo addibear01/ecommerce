@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# TaxRate management in ActiveAdmin.
 ActiveAdmin.register TaxRate do
   permit_params :province, :gst, :pst, :hst
 

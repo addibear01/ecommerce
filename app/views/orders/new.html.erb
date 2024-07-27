@@ -1,104 +1,30 @@
-<h2>Shipping Address</h2>
-<%= form_with(model: @order, url: orders_path, local: true, id: 'payment-form') do |form| %>
-  <%= form.label :street %>
-  <%= form.text_field :street %>
-  
-  <%= form.label :city %>
-  <%= form.text_field :city %>
-  
-  <%= form.label :province %>
-  <%= form.text_field :province %>
-  
-  <%= form.label :postal_code %>
-  <%= form.text_field :postal_code, id: 'postal-code' %>
-  
-  <h2>Payment Information</h2>
-  <article>
-    <label for="card-element">
-      Credit or debit card
-    </label>
-    <div id="card-element">
-      <!-- A Stripe Element will be inserted here. -->
+<%= form_with model: @order, url: orders_path, local: true do |form| %>
+  <% if @order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h2>
+      <ul>
+        <% @order.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
     </div>
+  <% end %>
 
-    <!-- Used to display form errors. -->
-    <div id="card-errors" role="alert"></div>
-  </article>
-
-  <%= form.submit 'Complete Order' %>
+  <div class="form-group">
+    <%= form.label :street %>
+    <%= form.text_field :street, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= form.label :city %>
+    <%= form.text_field :city, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= form.label :province_id, "Province" %>
+    <%= form.collection_select :province_id, Province.all, :id, :name, {}, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= form.label :postal_code %>
+    <%= form.text_field :postal_code, class: 'form-control' %>
+  </div>
+  <%= form.submit 'Complete Order', class: 'btn btn-primary' %>
 <% end %>
-
-<script src="https://js.stripe.com/v3/"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    console.log("DOM fully loaded and parsed");
-
-    var stripe = Stripe('<%= Rails.application.credentials.dig(:stripe, :publishable_key) %>');
-    console.log("Stripe initialized with publishable key:", '<%= Rails.application.credentials.dig(:stripe, :publishable_key) %>');
-
-    var elements = stripe.elements();
-    console.log("Elements created");
-
-    var style = {
-      base: {
-        color: '#32325d',
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: 'antialiased',
-        fontSize: '16px',
-        '::placeholder': {
-          color: '#aab7c4'
-        }
-      },
-      invalid: {
-        color: '#fa755a',
-        iconColor: '#fa755a'
-      }
-    };
-
-    var card = elements.create('card', { style: style, hidePostalCode: true });
-    console.log("Card element created");
-
-    card.mount('#card-element');
-    console.log("Card element mounted");
-
-    card.on('change', function(event) {
-      var displayError = document.getElementById('card-errors');
-      if (event.error) {
-        displayError.textContent = event.error.message;
-        console.log("Card error:", event.error.message);
-      } else {
-        displayError.textContent = '';
-        console.log("Card input is valid");
-      }
-    });
-
-    var form = document.getElementById('payment-form');
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-      console.log("Form submission prevented, creating token...");
-
-      stripe.createToken(card, { address_zip: document.getElementById('postal-code').value }).then(function(result) {
-        if (result.error) {
-          var errorElement = document.getElementById('card-errors');
-          errorElement.textContent = result.error.message;
-          console.log("Token creation error:", result.error.message);
-        } else {
-          console.log("Token created:", result.token.id);
-          stripeTokenHandler(result.token);
-        }
-      });
-    });
-
-    function stripeTokenHandler(token) {
-      var form = document.getElementById('payment-form');
-      var hiddenInput = document.createElement('input');
-      hiddenInput.setAttribute('type', 'hidden');
-      hiddenInput.setAttribute('name', 'stripeToken');
-      hiddenInput.setAttribute('value', token.id);
-      form.appendChild(hiddenInput);
-
-      console.log("Submitting form with token...");
-      form.submit();
-    }
-  });
-</script>

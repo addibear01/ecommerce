@@ -13,13 +13,28 @@ class OrdersController < ApplicationController
 
   def new
     @order = Order.new
-    @user = current_user
   end
 
   def create
-    @order = Order.new(order_params)
+    Rails.logger.debug "Complete parameters: #{params.inspect}"
+    Rails.logger.debug "Order parameters before require: #{params[:order].inspect}"
+
+    begin
+      order_permitted_params = order_params
+      Rails.logger.debug "Order parameters after permit: #{order_permitted_params.inspect}"
+    rescue ActionController::ParameterMissing => e
+      Rails.logger.error "Parameter missing error: #{e.message}"
+      @order = Order.new
+      render :new, status: :unprocessable_entity
+      return
+    end
+
+    @order = Order.new(order_permitted_params)
     @order.user = current_user
-    @order.order_status = :pending
+    @order.payment_status = 'unpaid' # Set the initial payment status to 'unpaid'
+    @order.order_status = 'created'      # Set the initial order status to 'new'
+
+    Rails.logger.debug "Order attributes before save: #{@order.attributes.inspect}"
 
     if @order.save
       if current_cart.cart_items.present?
@@ -35,22 +50,17 @@ class OrdersController < ApplicationController
           Stripe.api_key = Rails.application.credentials.dig(:stripe, :secret_key)
           amount = (@order.total_amount * 100).to_i
 
-          customer = Stripe::Customer.create(
-            email: current_user.email,
-            source: params[:stripeToken]
-          )
-
-          charge = Stripe::Charge.create(
-            customer: customer.id,
+          payment_intent = Stripe::PaymentIntent.create(
             amount: amount,
-            description: 'Rails Stripe customer',
-            currency: 'usd'
+            currency: 'usd',
+            payment_method_types: ['card'],
+            description: 'Order payment for Mirror Teddies'
           )
 
-          @order.update(payment_status: 'paid', payment_id: charge.id, order_status: :paid)
+          @order.update(payment_id: payment_intent.id)
           current_cart.clear
-          redirect_to @order, notice: 'Order was successfully created and paid.'
-        rescue Stripe::CardError => e
+          redirect_to new_payment_path(payment_intent_id: payment_intent.id), notice: 'Order was successfully created. Please complete the payment.'
+        rescue Stripe::StripeError => e
           @order.destroy
           flash[:error] = e.message
           render :new, status: :unprocessable_entity
@@ -65,9 +75,10 @@ class OrdersController < ApplicationController
     end
   end
 
+
   private
 
   def order_params
-    params.require(:order).permit(:street, :city, :province, :postal_code)
+    params.require(:order).permit(:street, :city, :province_id, :postal_code)
   end
 end

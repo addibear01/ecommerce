@@ -1,44 +1,43 @@
+# frozen_string_literal: true
+
+# Migration to create the users table for Devise authentication.
 class DeviseCreateUsers < ActiveRecord::Migration[6.1]
   def change
-    create_table :users do |t|
-      ## Database authenticatable
-      t.string :email, null: false, default: ""
-      t.string :encrypted_password, null: false, default: ""
+    create_users_table
+    add_indexes
+  end
 
-      ## Recoverable
-      t.string :reset_password_token
-      t.datetime :reset_password_sent_at
+  private
 
-      ## Rememberable
-      t.datetime :remember_created_at
+  def create_users_table
+    create_table :users do |table|
+      table.string :email, null: false, default: ''
+      table.string :encrypted_password, null: false, default: ''
 
-      ## Trackable
-      # t.integer  :sign_in_count, default: 0, null: false
-      # t.datetime :current_sign_in_at
-      # t.datetime :last_sign_in_at
-      # t.string   :current_sign_in_ip
-      # t.string   :last_sign_in_ip
+      add_recoverable_fields(table)
+      add_rememberable_fields(table)
+      add_address_and_province(table)
 
-      ## Confirmable
-      # t.string   :confirmation_token
-      # t.datetime :confirmed_at
-      # t.datetime :confirmation_sent_at
-      # t.string   :unconfirmed_email # Only if using reconfirmable
-
-      ## Lockable
-      # t.integer  :failed_attempts, default: 0, null: false # Only if lock strategy is :failed_attempts
-      # t.string   :unlock_token # Only if unlock strategy is :email or :both
-      # t.datetime :locked_at
-
-      t.string :address
-      t.references :province, foreign_key: true, null: false, default: 1
-
-      t.timestamps null: false
+      table.timestamps null: false
     end
+  end
 
-    add_index :users, :email,                unique: true
+  def add_recoverable_fields(table)
+    table.string :reset_password_token
+    table.datetime :reset_password_sent_at
+  end
+
+  def add_rememberable_fields(table)
+    table.datetime :remember_created_at
+  end
+
+  def add_address_and_province(table)
+    table.string :address
+    table.references :province, foreign_key: true, null: false, default: 1
+  end
+
+  def add_indexes
+    add_index :users, :email, unique: true
     add_index :users, :reset_password_token, unique: true
-    # add_index :users, :confirmation_token,   unique: true
-    # add_index :users, :unlock_token,         unique: true
   end
 end

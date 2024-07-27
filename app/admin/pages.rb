@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Page management in ActiveAdmin.
 ActiveAdmin.register Page do
   permit_params :title, :content, :slug
 

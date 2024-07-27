@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Migration to create the cart_items table with references to carts and teddy_types.
 class CreateCartItems < ActiveRecord::Migration[6.1]
   def change
     create_table :cart_items do |t|

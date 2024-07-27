@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
+# CategoriesController manages the display of product categories and the products within them.
 class CategoriesController < ApplicationController
   before_action :set_category, only: [:show]
 
-  add_breadcrumb "Categories", :categories_path, only: [:index]
+  add_breadcrumb 'Categories', :categories_path, only: [:index]
 
   def index
     @categories = Category.all

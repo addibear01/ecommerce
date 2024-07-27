@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Migration to update foreign key in orders table to reference users instead of customers.
 class UpdateForeignKeyInOrders < ActiveRecord::Migration[6.0]
   def change
     # Ensure the foreign key references users instead of customers

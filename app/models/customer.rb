@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
+# Customer represents a customer in the e-commerce application.
 class Customer < ApplicationRecord
   has_many :orders
   has_many :carts
 
-  # Validations
   validates :first_name, presence: true, length: { maximum: 50 }
   validates :last_name, presence: true, length: { maximum: 50 }
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }

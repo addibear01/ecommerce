@@ -1,0 +1,7 @@
+<%= panel 'Order Items' do %>
+  <%= table_for order.order_items do %>
+    <%= column :teddy_type %>
+    <%= column :quantity %>
+    <%= column :price %>
+  <% end %>
+<% end %>

@@ -1,6 +1,9 @@
-ActiveAdmin.register_page "Dashboard" do
+# frozen_string_literal: true
+
+# Dashboard page configuration in ActiveAdmin.
+ActiveAdmin.register_page 'Dashboard' do
   content do
-    panel "Recent Orders" do
+    panel 'Recent Orders' do
       ul do
         Order.recent(5).map do |order|
           li link_to("Order ##{order.id}", admin_order_path(order))
@@ -8,9 +11,9 @@ ActiveAdmin.register_page "Dashboard" do
       end
     end
 
-    panel "Reports" do
+    panel 'Reports' do
       ul do
-        li link_to("Orders Report", admin_orders_report_path)
+        li link_to('Orders Report', admin_orders_report_path)
       end
     end
   end

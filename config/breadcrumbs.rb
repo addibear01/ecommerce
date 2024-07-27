@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 crumb :root do
-  link "Home", root_path
+  link 'Home', root_path
 end
 
 crumb :categories do
-  link "Categories", categories_path
+  link 'Categories', categories_path
   parent :root
 end
 
@@ -13,7 +15,7 @@ crumb :category do |category|
 end
 
 crumb :teddy_types do
-  link "Teddy Types", teddy_types_path
+  link 'Teddy Types', teddy_types_path
   parent :root
 end
 

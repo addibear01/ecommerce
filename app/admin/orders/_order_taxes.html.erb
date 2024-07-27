@@ -1,0 +1,6 @@
+<%= panel 'Taxes' do %>
+  <%= table_for order.calculate_taxes.to_a do %>
+    <%= column :tax_name, &:upcase %>
+    <%= column :tax_amount, &:formatted_amount %>
+  <% end %>
+<% end %>

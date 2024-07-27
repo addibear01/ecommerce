@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Migration to add various details fields to orders table.
 class AddDetailsToOrders < ActiveRecord::Migration[7.1]
   def change
     add_column :orders, :payment_status, :string unless column_exists?(:orders, :payment_status)

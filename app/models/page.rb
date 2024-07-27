@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Page represents a static page in the application.
 class Page < ApplicationRecord
   validates :title, presence: true
   validates :content, presence: true
@@ -9,8 +12,8 @@ class Page < ApplicationRecord
   def generate_slug
     self.slug ||= title.parameterize if title
   end
-  
-  def self.ransackable_attributes(auth_object = nil)
-    ["id", "title", "content", "slug", "created_at", "updated_at"]
+
+  private_class_method def self.ransackable_attributes(_auth_object = nil)
+    %w[id title content slug created_at updated_at]
   end
 end

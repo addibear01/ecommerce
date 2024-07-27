@@ -1,9 +1,66 @@
+# frozen_string_literal: true
+
+# Helper methods for rendering order details
+def render_order_details(order)
+  attributes_table_for order do
+    row :id
+    row :user
+    row :created_at
+    row :updated_at
+    row :total_amount, &:formatted_total_amount
+    row :payment_status
+    row :order_status
+    row :payment_id
+  end
+end
+
+def render_order_items(order)
+  panel 'Order Items' do
+    table_for order.order_items do
+      column :teddy_type
+      column :quantity
+      column :price
+    end
+  end
+end
+
+def render_order_taxes(order)
+  panel 'Taxes' do
+    table_for order.calculate_taxes.to_a do
+      column :tax_name, &:upcase
+      column :tax_amount, &:formatted_amount
+    end
+  end
+end
+
+# Permitted parameters for Order
+def permitted_order_params
+  %i[
+    user_id street city province postal_code total_amount payment_status
+    order_status payment_id
+  ]
+end
+
+# Action items for Order
+def order_action_items
+  action_item :ship_order, only: :show do
+    link_to 'Mark as Shipped', mark_as_shipped_admin_order_path(order), method: :put if order.paid?
+  end
+end
+
+# Member actions for Order
+def order_member_actions
+  member_action :mark_as_shipped, method: :put do
+    resource.update(order_status: :shipped)
+    redirect_to resource_path, notice: 'Order marked as shipped.'
+  end
+end
 ActiveAdmin.register Order do
   permit_params :user_id, :street, :city, :province, :postal_code, :total_amount, :payment_status, :order_status, :payment_id
 
   controller do
     def find_resource
-      Order.includes(:order_items, :order_taxes).find(params[:id])
+      Order.includes(:order_items).find(params[:id])
     end
   end
 

@@ -1,37 +1,46 @@
-<!-- app/views/teddy_types/index.html.erb -->
-<h1 class="text-2xl font-bold mb-4">Teddy Types</h1>
+<h1>Teddy Types</h1>
 
-<%= form_with url: teddy_types_path, method: :get, local: true, class: "mb-4" do %>
-  <div class="mb-4">
-    <%= label_tag :search, "Search by keyword:", class: "block text-gray-700" %>
-    <%= text_field_tag :search, params[:search], class: "form-input mt-1 block w-full" %>
-  </div>
-  <div class="mb-4">
-    <%= label_tag :category_id, "Filter by category:", class: "block text-gray-700" %>
-    <%= select_tag :category_id, options_from_collection_for_select(@categories, :id, :category_name, params[:category_id]), prompt: "Select a category", class: "form-select mt-1 block w-full" %>
-  </div>
-  <div class="mb-4">
-    <%= label_tag :filter, "Filter by:", class: "block text-gray-700" %>
-    <%= select_tag :filter, options_for_select([['On Sale', 'on_sale'], ['New', 'new'], ['Recently Updated', 'recently_updated']], params[:filter]), prompt: "Select a filter", class: "form-select mt-1 block w-full" %>
-  </div>
-  <div>
-    <%= submit_tag 'Search', class: "bg-blue-500 text-white px-4 py-2 rounded" %>
-  </div>
-<% end %>
+<div class="filters mb-4">
+  <%= form_with url: teddy_types_path, method: :get, local: true do %>
+    <div class="form-group">
+      <%= label_tag :search, 'Search' %>
+      <%= text_field_tag :search, params[:search], class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= label_tag :category_id, 'Category' %>
+      <%= select_tag :category_id, options_from_collection_for_select(Category.all, :id, :category_name, params[:category_id]), include_blank: 'All Categories', class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= label_tag :filter, 'Filter' %>
+      <%= select_tag :filter, options_for_select([['On Sale', 'on_sale'], ['New', 'new'], ['Recently Updated', 'recently_updated']], params[:filter]), include_blank: 'No Filter', class: 'form-control' %>
+    </div>
+    <%= submit_tag 'Apply Filters', class: 'btn btn-primary' %>
+  <% end %>
+</div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<div class="teddy-types grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
   <% @teddy_types.each do |teddy_type| %>
-    <div class="bg-white p-4 rounded shadow">
-      <h2 class="text-xl font-bold"><%= link_to teddy_type.teddy_name, teddy_type_path(teddy_type) %></h2>
+    <div class="card bg-white rounded shadow p-4">
       <% if teddy_type.image.attached? %>
-        <%= image_tag teddy_type.thumbnail, class: "mt-2 w-full h-auto" %>
+        <div class="card-img-top">
+          <%= image_tag teddy_type.image.variant(resize: '300x300'), class: 'w-full h-auto' %>
+        </div>
       <% end %>
-      <p class="mt-2 text-gray-700"><%= teddy_type.description %></p>
-      <% if user_signed_in? %>
-        <%= link_to 'Add to Cart', cart_add_item_path(current_cart.id, teddy_type.id), method: :post, class: "bg-blue-500 text-white px-4 py-2 rounded mt-2" %>
-      <% else %>
-        <%= link_to 'Sign In to Add to Cart', new_user_session_path, class: "bg-blue-500 text-white px-4 py-2 rounded mt-2" %>
-      <% end %>
+      <div class="card-body">
+        <h5 class="card-title"><%= link_to teddy_type.teddy_name, teddy_type_path(teddy_type), class: 'text-blue-500 hover:underline' %></h5>
+        <p class="card-text"><%= teddy_type.description %></p>
+        <p class="card-text font-bold">Price: <%= number_to_currency(teddy_type.price) %></p>
+      </div>
+      <div class="card-footer">
+        <% if user_signed_in? %>
+          <%= form_with url: add_item_cart_path(teddy_type_id: teddy_type.id), method: :post, local: true do %>
+            <%= number_field_tag :quantity, 1, min: 1, class: 'form-control' %>
+            <%= submit_tag 'Add to Cart', class: 'btn btn-primary mt-2' %>
+          <% end %>
+        <% else %>
+          <%= link_to 'Sign in to add to cart', new_user_session_path, class: 'btn btn-secondary' %>
+        <% end %>
+      </div>
     </div>
   <% end %>
 </div>

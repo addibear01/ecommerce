@@ -1,7 +1,11 @@
 class Cart < ApplicationRecord
-  belongs_to :customer, class_name: 'User'
+  belongs_to :user
   has_many :cart_items, dependent: :destroy
   has_many :teddy_types, through: :cart_items
+
+  def total_price
+    cart_items.includes(:teddy_type).sum { |item| item.teddy_type.price * item.quantity }
+  end
 
   def add_teddy_type(teddy_type)
     current_item = cart_items.find_by(teddy_type_id: teddy_type.id)
@@ -9,8 +13,10 @@ class Cart < ApplicationRecord
       current_item.quantity += 1
     else
       current_item = cart_items.build(teddy_type_id: teddy_type.id)
+      current_item.quantity = 1
     end
     current_item.save
+    current_item
   end
 
   def remove_teddy_type(teddy_type)

@@ -1,6 +1,221 @@
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2em;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    nav {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav ul li {
+      margin: 0 10px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #007bff;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    form .form-group {
+      margin-bottom: 20px;
+    }
+
+    form .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    form .form-group input,
+    form .form-group select,
+    form .form-group button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    form .form-group button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    form .form-group button:hover {
+      background-color: #0056b3;
+    }
+
+    .card {
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .card-title {
+      font-size: 1.25em;
+      font-weight: bold;
+      color: #007bff;
+      margin-bottom: 10px;
+    }
+
+    .card-title a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card-title a:hover {
+      text-decoration: underline;
+    }
+
+    .card-text {
+      margin-bottom: 10px;
+      color: #666;
+    }
+
+    .card-footer {
+      text-align: center;
+    }
+
+    .card-footer a {
+      display: inline-block;
+      padding: 10px 20px;
+      margin-top: 10px;
+      color: white;
+      background-color: #007bff;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+
+    .card-footer a:hover {
+      background-color: #0056b3;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    /* Additional styles for new sections */
+    .text-2xl {
+      font-size: 1.5em;
+    }
+
+    .font-bold {
+      font-weight: bold;
+    }
+
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+
+    .text-blue-500 {
+      color: #007bff;
+    }
+
+    .hover\:underline:hover {
+      text-decoration: underline;
+    }
+
+    .grid-cols-1 {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .md\:grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .lg\:grid-cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .gap-4 {
+      gap: 1rem;
+    }
+
+    .bg-white {
+      background-color: white;
+    }
+
+    .p-4 {
+      padding: 1rem;
+    }
+
+    .rounded {
+      border-radius: 0.25rem;
+    }
+
+    .shadow {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .text-xl {
+      font-size: 1.25em;
+    }
+
+    .mt-2 {
+      margin-top: 0.5rem;
+    }
+
+    .w-full {
+      width: 100%;
+    }
+
+    .h-auto {
+      height: auto;
+    }
+
+    .text-gray-700 {
+      color: #4a5568;
+    }
+  </style>
 <div class="teddy-type-details text-center max-w-lg mx-auto mt-8 p-4 bg-white rounded shadow">
-  
- 
   <h1 class="text-2xl font-bold mb-4"><%= @teddy_type.teddy_name %></h1>
   <% if @teddy_type.image.attached? %>
     <div class="teddy-image-wrapper mb-4">

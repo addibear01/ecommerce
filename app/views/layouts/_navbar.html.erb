@@ -1,6 +1,6 @@
 <nav class="bg-gray-800 p-4">
-  <div class="container mx-auto">
-    <ul class="flex space-x-4">
+  <div>
+    <ul>
       <li><%= link_to 'Home', root_path, class: "text-white hover:text-gray-300" %></li>
       <li><%= link_to 'About', page_path('about'), class: "text-white hover:text-gray-300" %></li>
       <li><%= link_to 'Contact', page_path('contact'), class: "text-white hover:text-gray-300" %></li>
@@ -8,7 +8,7 @@
       <% if user_signed_in? %>
         <li><%= link_to 'Edit Account', edit_user_registration_path, class: "text-white hover:text-gray-300" %></li>
         <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "text-white hover:text-gray-300" %></li>
-        <li><%= link_to 'Your Cart', cart_path(current_cart), class: "text-white hover:text-gray-300" %></li>
+        <li><%= link_to 'Your Cart', cart_path(current_user.cart), class: "text-white hover:text-gray-300" %></li>
         <li><%= link_to 'Your Orders', orders_path, class: "text-white hover:text-gray-300" %></li>
       <% else %>
         <li><%= link_to 'Sign Up', new_user_registration_path, class: "text-white hover:text-gray-300" %></li>

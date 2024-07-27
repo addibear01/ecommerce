@@ -2,16 +2,38 @@
 
 <%= form_tag payments_path, id: 'payment-form' do %>
   <article>
-    <label for="card-element">
-      Credit or debit card
-    </label>
+    <label for="card-element">Credit or debit card</label>
     <div id="card-element">
       <!-- A Stripe Element will be inserted here. -->
     </div>
-
     <!-- Used to display form errors. -->
     <div id="card-errors" role="alert"></div>
   </article>
+
+  <div class="form-group">
+    <%= label_tag :billing_name, 'Name' %>
+    <%= text_field_tag :billing_name, nil, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :billing_address, 'Street' %>
+    <%= text_field_tag :billing_address, nil, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :billing_city, 'City' %>
+    <%= text_field_tag :billing_city, nil, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :billing_state, 'State/Province' %>
+    <%= text_field_tag :billing_state, nil, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :billing_zip, 'Postal Code' %>
+    <%= text_field_tag :billing_zip, nil, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= label_tag :billing_country, 'Country' %>
+    <%= text_field_tag :billing_country, nil, class: 'form-control' %>
+  </div>
 
   <button type="submit">Submit Payment</button>
 <% end %>
@@ -19,13 +41,8 @@
 <script src="https://js.stripe.com/v3/"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    // Create a Stripe client using the publishable key from credentials
     var stripe = Stripe('<%= Rails.application.credentials.dig(:stripe, :publishable_key) %>');
-
-    // Create an instance of Elements
     var elements = stripe.elements();
-
-    // Custom styling can be passed to options when creating an Element.
     var style = {
       base: {
         color: '#32325d',
@@ -41,14 +58,8 @@
         iconColor: '#fa755a'
       }
     };
-
-    // Create an instance of the card Element.
     var card = elements.create('card', {style: style});
-
-    // Add an instance of the card Element into the `card-element` <div>.
     card.mount('#card-element');
-
-    // Handle real-time validation errors from the card Element.
     card.on('change', function(event) {
       var displayError = document.getElementById('card-errors');
       if (event.error) {
@@ -57,25 +68,18 @@
         displayError.textContent = '';
       }
     });
-
-    // Handle form submission.
     var form = document.getElementById('payment-form');
     form.addEventListener('submit', function(event) {
       event.preventDefault();
-
       stripe.createToken(card).then(function(result) {
         if (result.error) {
-          // Inform the user if there was an error.
           var errorElement = document.getElementById('card-errors');
           errorElement.textContent = result.error.message;
         } else {
-          // Send the token to your server.
           stripeTokenHandler(result.token);
         }
       });
     });
-
-    // Submit the form with the token ID.
     function stripeTokenHandler(token) {
       var form = document.getElementById('payment-form');
       var hiddenInput = document.createElement('input');
@@ -84,7 +88,44 @@
       hiddenInput.setAttribute('value', token.id);
       form.appendChild(hiddenInput);
 
-      // Submit the form.
+      // Add billing details
+      var nameInput = document.createElement('input');
+      nameInput.setAttribute('type', 'hidden');
+      nameInput.setAttribute('name', 'billing_name');
+      nameInput.setAttribute('value', document.querySelector('input[name="billing_name"]').value);
+      form.appendChild(nameInput);
+
+      var addressInput = document.createElement('input');
+      addressInput.setAttribute('type', 'hidden');
+      addressInput.setAttribute('name', 'billing_address');
+      addressInput.setAttribute('value', document.querySelector('input[name="billing_address"]').value);
+      form.appendChild(addressInput);
+
+      var cityInput = document.createElement('input');
+      cityInput.setAttribute('type', 'hidden');
+      cityInput.setAttribute('name', 'billing_city');
+      cityInput.setAttribute('value', document.querySelector('input[name="billing_city"]').value);
+      form.appendChild(cityInput);
+
+      var stateInput = document.createElement('input');
+      stateInput.setAttribute('type', 'hidden');
+      stateInput.setAttribute('name', 'billing_state');
+      stateInput.setAttribute('value', document.querySelector('input[name="billing_state"]').value);
+      form.appendChild(stateInput);
+
+      var zipInput = document.createElement('input');
+      zipInput.setAttribute('type', 'hidden');
+      zipInput.setAttribute('name', 'billing_zip');
+      zipInput.setAttribute('value', document.querySelector('input[name="billing_zip"]').value);
+      form.appendChild(zipInput);
+
+      var countryInput = document.createElement('input');
+      countryInput.setAttribute('type', 'hidden');
+      countryInput.setAttribute('name', 'billing_country');
+      countryInput.setAttribute('value', document.querySelector('input[name="billing_country"]').value);
+      form.appendChild(countryInput);
+
+      // Submit the form
       form.submit();
     }
   });

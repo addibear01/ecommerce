@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# TeddyTypesController manages the display and filtering of teddy types.
 class TeddyTypesController < ApplicationController
   before_action :set_teddy_type, only: [:show]
 

@@ -1,0 +1,14 @@
+<%= attributes_table do %>
+  <%= row :id %>
+  <%= row :teddy_name %>
+  <%= row :description %>
+  <%= row :price %>
+  <%= row :stock_quantity %>
+  <%= row :category %>
+  <%= row :on_sale %>
+  <%= row :image do %>
+    <%= image_variant(teddy_type, :large) %>
+  <% end %>
+  <%= row :created_at %>
+  <%= row :updated_at %>
+<% end %>

@@ -8,3 +8,6 @@ import "channels";
 Rails.start();
 Turbolinks.start();
 ActiveStorage.start();
+
+// Import styles
+import "stylesheets/application"; // Adjust the path if necessary

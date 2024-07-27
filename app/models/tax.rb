@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Tax represents a tax type in the application.
 class Tax < ApplicationRecord
   has_many :order_taxes
 

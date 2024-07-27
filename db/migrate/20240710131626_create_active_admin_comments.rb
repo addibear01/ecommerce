@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Migration to create the active_admin_comments table for ActiveAdmin.
 class CreateActiveAdminComments < ActiveRecord::Migration[7.1]
   def self.up
     create_table :active_admin_comments do |t|

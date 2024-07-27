@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Category management in ActiveAdmin.
 ActiveAdmin.register Category do
   permit_params :category_name
 

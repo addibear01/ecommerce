@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Migration to add address fields to orders table.
 class AddAddressToOrders < ActiveRecord::Migration[7.1]
   def change
     add_column :orders, :street, :string

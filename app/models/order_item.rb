@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# OrderItem represents an item in an order.
 class OrderItem < ApplicationRecord
   belongs_to :order
   belongs_to :teddy_type

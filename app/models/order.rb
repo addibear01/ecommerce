@@ -1,11 +1,15 @@
 class Order < ApplicationRecord
   belongs_to :user
+  belongs_to :province, optional: true
   has_many :order_items, dependent: :destroy
-  has_many :order_taxes, dependent: :destroy
 
-  validates :street, :city, :province, :postal_code, presence: true
+  validates :street, :city, :province_id, :postal_code, presence: true
+  validates :postal_code, length: { maximum: 10 }
 
-  enum order_status: { pending: 0, paid: 1, shipped: 2 }
+  enum order_status: { created: 0, pending: 0, processed: 1, shipped: 2 }
+  enum payment_status: { unpaid: 0, paid: 1, refunded: 2 }
+
+  PROVINCES = ['Alberta', 'British Columbia', 'Manitoba', 'New Brunswick', 'Newfoundland and Labrador', 'Nova Scotia', 'Ontario', 'Prince Edward Island', 'Quebec', 'Saskatchewan', 'Northwest Territories', 'Nunavut', 'Yukon']
 
   def total_amount
     subtotal + total_taxes
@@ -20,7 +24,9 @@ class Order < ApplicationRecord
   end
 
   def calculate_taxes
-    case province
+    return { gst: subtotal * 0.05 } unless province
+
+    case province.name
     when 'Alberta', 'Northwest Territories', 'Nunavut', 'Yukon'
       { gst: subtotal * 0.05 }
     when 'British Columbia'
@@ -41,11 +47,11 @@ class Order < ApplicationRecord
   end
 
   def self.ransackable_attributes(auth_object = nil)
-    ["id", "user_id", "created_at", "updated_at", "total_amount", "street", "city", "province", "postal_code", "payment_status", "payment_id"]
+    super + ["order_status"]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["user", "order_items", "order_taxes"]
+    super + ["user", "order_items"]
   end
 
   scope :recent, ->(limit) { order(created_at: :desc).limit(limit) }

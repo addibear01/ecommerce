@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Migration to add trackable fields to the users table.
 class AddTrackableToUsers < ActiveRecord::Migration[7.0]
   def change
     change_table :users, bulk: true do |t|
