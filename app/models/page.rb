@@ -13,7 +13,11 @@ class Page < ApplicationRecord
     self.slug ||= title.parameterize if title
   end
 
-  private_class_method def self.ransackable_attributes(_auth_object = nil)
-    %w[id title content slug created_at updated_at]
+  def self.ransackable_attributes(auth_object = nil)
+    %w[title content created_at slug]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    []  # Add associations if needed
   end
 end

@@ -1,4 +1,14 @@
-<style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>EcommerceProject</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <style>
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f9;
@@ -142,7 +152,7 @@
       gap: 20px;
     }
 
-    /* Additional styles for new sections */
+    /* Tailwind CSS-like custom styles */
     .text-2xl {
       font-size: 1.5em;
     }
@@ -215,15 +225,6 @@
       color: #4a5568;
     }
   </style>
-<!DOCTYPE html>
-<html>
-<head>
-  <title>EcommerceProject</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
-  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 </head>
 <body class="bg-gray-100 text-gray-900">
   <%= render 'layouts/header' %>

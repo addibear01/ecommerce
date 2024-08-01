@@ -27,7 +27,7 @@ class WebhooksController < ApplicationController
       payment_intent = event['data']['object']
       order = Order.find_by(payment_id: payment_intent['id'])
       if order && order.payment_status == 'unpaid'
-        order.update(payment_status: 'paid', order_status: 'new') # Update order status as needed
+        order.update(payment_status: 'paid', order_status: 'paid') # Update order status as needed
       end
     else
       Rails.logger.info "Unhandled event type: #{event['type']}"

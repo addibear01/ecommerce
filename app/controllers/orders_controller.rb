@@ -32,7 +32,7 @@ class OrdersController < ApplicationController
     @order = Order.new(order_permitted_params)
     @order.user = current_user
     @order.payment_status = 'unpaid' # Set the initial payment status to 'unpaid'
-    @order.order_status = 'created'      # Set the initial order status to 'new'
+    @order.order_status = 'new'      # Set the initial order status to 'new'
 
     Rails.logger.debug "Order attributes before save: #{@order.attributes.inspect}"
 
@@ -74,7 +74,6 @@ class OrdersController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
-
 
   private
 
